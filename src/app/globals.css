@@ -124,3 +124,11 @@
     font-family: var(--font-raleway), sans-serif;
   }
 }
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}

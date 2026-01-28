@@ -1,24 +1,27 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { getProducts } from "@/services/api/product.api";
+import { useMemo, useState } from "react";
 import { paginate } from "@/utils/paginate";
+import { useProductsContext } from "@/context/ProductsContext";
 import { ProductData } from "@/types/product";
 
 export function useProducts() {
-  const [products, setProducts] = useState<ProductData[]>([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    products,
+    loading,
+    addNewProduct,
+    editProductById,
+    deleteProductById,
+  } = useProductsContext();
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
-
-  useEffect(() => {
-    setLoading(true);
-    getProducts()
-      .then((res) => setProducts(res))
-      .finally(() => setLoading(false));
-  }, []);
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [editProduct, setEditProduct] = useState<any>(null);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -37,6 +40,56 @@ export function useProducts() {
     [filteredProducts, page, limit],
   );
 
+  const openDeleteConfirm = (id: number) => {
+    setDeleteId(id);
+  };
+
+  const closeDeleteConfirm = () => {
+    setDeleteId(null);
+  };
+
+  // delete function
+  const handleDelete = async () => {
+    if (!deleteId) return;
+
+    setButtonLoading(true);
+    try {
+      await deleteProductById(deleteId);
+      closeDeleteConfirm();
+    } finally {
+      setButtonLoading(false);
+    }
+  };
+
+  const openAddModal = () => {
+    setShowAddModal(true);
+  };
+
+  const openEditModal = (data: ProductData) => {
+    setEditProduct(data);
+    setShowAddModal(true);
+  };
+
+  const closeAddModal = () => {
+    setShowAddModal(false);
+  };
+
+  // add/edit function
+  const handleAddEdit = async (data: any) => {
+    setButtonLoading(true);
+    try {
+      if (editProduct) {
+        await editProductById(editProduct.id, data);
+      } else {
+        await addNewProduct(data);
+      }
+      setEditProduct(null);
+      closeAddModal();
+    } finally {
+      setButtonLoading(false);
+    }
+  };
+
   return {
     loading,
     products: paginated.data,
@@ -49,5 +102,16 @@ export function useProducts() {
     setSearch,
     category,
     setCategory,
+    buttonLoading,
+    handleDelete,
+    deleteId,
+    openDeleteConfirm,
+    closeDeleteConfirm,
+    showAddModal,
+    openAddModal,
+    closeAddModal,
+    handleAddEdit,
+    editProduct,
+    openEditModal,
   };
 }

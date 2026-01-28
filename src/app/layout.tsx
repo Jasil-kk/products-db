@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
+import { ProductsProvider } from "@/context/ProductsContext";
 
 const raleway = Raleway({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <ProductsProvider>
           <div className="flex h-screen">
             <Sidebar />
             <div className="flex flex-1 flex-col overflow-hidden">
@@ -47,6 +49,7 @@ export default function RootLayout({
               </main>
             </div>
           </div>
+          </ProductsProvider>
         </ThemeProvider>
       </body>
     </html>

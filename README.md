@@ -115,10 +115,10 @@ This approach prioritizes robustness and simplicity for an admin-style interface
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/Jasil-kk/products-db.git
 
 # Navigate to the project
-cd your-repo-name
+cd products-db
 
 # Install dependencies
 npm install

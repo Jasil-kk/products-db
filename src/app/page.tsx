@@ -9,8 +9,8 @@ import { ProductTableSkeleton } from "@/components/products/product-table-skelet
 import { DeleteProductDialog } from "@/components/products/delete-product-dialog";
 import { PageLoader } from "@/components/page-loader";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { ProductFormDialog } from "@/components/products/ProductFormDialog";
+import { Plus } from "lucide-react";
 
 export default function Home() {
   const {
@@ -35,28 +35,42 @@ export default function Home() {
     closeAddModal,
     handleAddEdit,
     editProduct,
-    openEditModal
+    openEditModal,
+    minPrice,
+    maxPrice,
+    setMinPrice,
+    setMaxPrice,
   } = useProducts();
 
   return (
     <>
-      <main className="space-y-6">
+      <main className="space-y-2">
         <div className="w-full flex items-center gap-5 flex-wrap justify-between">
           <h1 className="text-2xl font-semibold">Products</h1>
-          <Button onClick={openAddModal}>Add Product</Button>
+          <Button onClick={openAddModal}>
+            <Plus /> Add Product
+          </Button>
         </div>
         <ProductTableToolbar
           search={search}
           onSearch={setSearch}
           category={category}
           onCategoryChange={setCategory}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          onMinPriceChange={setMinPrice}
+          onMaxPriceChange={setMaxPrice}
         />
 
         {loading ? (
           <ProductTableSkeleton rows={limit} />
         ) : products.length ? (
           <>
-            <ProductTable data={products} deleteClick={openDeleteConfirm} editClick={openEditModal}/>
+            <ProductTable
+              data={products}
+              deleteClick={openDeleteConfirm}
+              editClick={openEditModal}
+            />
             <ProductTablePagination
               total={total}
               page={page}

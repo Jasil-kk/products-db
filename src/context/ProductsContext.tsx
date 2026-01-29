@@ -20,8 +20,8 @@ interface ProductsContextProps {
   loading: boolean;
   setProducts: (products: ProductData[]) => void;
   refreshProducts: () => Promise<void>;
-  addNewProduct: (data: any) => Promise<void>;
-  editProductById: (id: number, data: any) => Promise<void>;
+  addNewProduct: (data: ProductData) => Promise<void>;
+  editProductById: (id: number, data: ProductData) => Promise<void>;
   deleteProductById: (id: number) => Promise<void>;
 }
 
@@ -43,14 +43,27 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const addNewProduct = async (data: any) => {
+  const addNewProduct = async (data: ProductData) => {
     const created = await addProduct(data);
     setProducts((prev) => [created, ...prev]);
   };
 
-  const editProductById = async (id: number, data: any) => {
+  const editProductById = async (id: number, data: ProductData) => {
     const updated = await updateProduct(id, data);
-    setProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+    setProducts((prev) =>
+      prev.map((p) =>
+        p.id === id
+          ? {
+              ...p,
+              title: updated.title ?? p.title,
+              price: updated.price ?? p.price,
+              description: updated.description ?? p.description,
+              image: updated.image ?? p.image,
+              category: updated.category ?? p.category,
+            }
+          : p,
+      ),
+    );
   };
 
   const deleteProductById = async (id: number) => {

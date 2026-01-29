@@ -30,7 +30,7 @@ export function ProductFormDialog({
 }: Props) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
@@ -42,7 +42,12 @@ export function ProductFormDialog({
             Cancel
           </Button>
 
-          <Button type="submit" form="product-form" className="min-w-25" disabled={loading}>
+          <Button
+            type="submit"
+            form="product-form"
+            className="min-w-25"
+            disabled={loading}
+          >
             {loading ? "Saving..." : "Save"}
           </Button>
         </DialogFooter>

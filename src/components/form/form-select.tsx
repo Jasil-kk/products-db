@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "../ui/label";
+import { cn } from "@/lib/utils";
 
 type FormSelectProps<T extends FieldValues> = {
   label: string;
@@ -17,7 +18,55 @@ type FormSelectProps<T extends FieldValues> = {
   options: string[];
   placeholder?: string;
   error?: { message?: string };
+  required?: boolean;
 };
+
+// export function FormSelect<T extends FieldValues>({
+//   label,
+//   name,
+//   control,
+//   options,
+//   placeholder = "Select an option",
+//   error,
+//   required,
+// }: FormSelectProps<T>) {
+//   return (
+//     <div className="flex flex-col gap-1 w-full">
+//       <Label className="mb-1">
+//         {label}
+//         {required && (
+//           <span className="-ml-1 text-destructive font-open-sans">*</span>
+//         )}
+//       </Label>
+
+//       <Controller
+//         name={name}
+//         control={control}
+//         render={({ field }) => (
+//           <Select value={field.value} onValueChange={field.onChange}>
+//             <SelectTrigger
+//               className={cn(error && "border-destructive", "w-full capitalize")}
+//             >
+//               <SelectValue placeholder={placeholder} />
+//             </SelectTrigger>
+
+//             <SelectContent className="capitalize">
+//               {options.map((option) => (
+//                 <SelectItem key={option} value={option}>
+//                   {option}
+//                 </SelectItem>
+//               ))}
+//             </SelectContent>
+//           </Select>
+//         )}
+//       />
+
+//       {error?.message && (
+//         <span className="text-xs text-destructive">{error.message}</span>
+//       )}
+//     </div>
+//   );
+// }
 
 export function FormSelect<T extends FieldValues>({
   label,
@@ -26,33 +75,46 @@ export function FormSelect<T extends FieldValues>({
   options,
   placeholder = "Select an option",
   error,
+  required,
 }: FormSelectProps<T>) {
   return (
     <div className="flex flex-col gap-1 w-full">
-      <Label className="font-medium mb-1">{label}</Label>
+      <Label className="mb-1">
+        {label}
+        {required && (
+          <span className="-ml-1 text-destructive font-open-sans">*</span>
+        )}
+      </Label>
 
       <Controller
         name={name}
         control={control}
-        render={({ field }) => (
-          <Select value={field.value} onValueChange={field.onChange}>
-            <SelectTrigger className="w-full capitalize">
-              <SelectValue placeholder={placeholder} />
-            </SelectTrigger>
+        render={({ field }) => {
+          // Force default to "" if undefined
+          const value = field.value ?? "";
 
-            <SelectContent className="capitalize">
-              {options.map((option) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        )}
+          return (
+            <Select value={value} onValueChange={field.onChange}>
+              <SelectTrigger
+                className={cn(error && "border-destructive", "w-full capitalize")}
+              >
+                <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+
+              <SelectContent className="capitalize">
+                {options.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          );
+        }}
       />
 
       {error?.message && (
-        <span className="text-sm text-destructive">{error.message}</span>
+        <span className="text-xs text-destructive">{error.message}</span>
       )}
     </div>
   );

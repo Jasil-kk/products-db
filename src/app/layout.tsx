@@ -38,17 +38,17 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ProductsProvider>
-          <div className="flex h-screen">
-            <Sidebar />
-            <div className="flex flex-1 flex-col overflow-hidden">
-              <Header />
-              <main className="flex-1 overflow-hidden">
-                <div className="h-full w-full overflow-auto p-4 md:p-6">
-                  {children}
-                </div>
-              </main>
+            <div className="flex h-screen bg-[#f2f2f2] dark:bg-[#202020]">
+              <Sidebar />
+              <div className="flex flex-1 flex-col overflow-hidden">
+                <Header />
+                <main className="flex-1 overflow-hidden">
+                  <div className="h-full w-full overflow-auto p-4 md:p-6">
+                    {children}
+                  </div>
+                </main>
+              </div>
             </div>
-          </div>
           </ProductsProvider>
         </ThemeProvider>
       </body>

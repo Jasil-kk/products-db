@@ -7,12 +7,24 @@ import { FieldError } from "react-hook-form";
 type Props = {
   label: string;
   error?: FieldError;
+  required?: boolean;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
-export function FormTextarea({ label, error, className, ...props }: Props) {
+export function FormTextarea({
+  label,
+  error,
+  required,
+  className,
+  ...props
+}: Props) {
   return (
     <div className="space-y-1">
-      <Label className="mb-2">{label}</Label>
+      <Label className="mb-2">
+        {label}
+        {required && (
+          <span className="-ml-1 text-destructive font-open-sans">*</span>
+        )}
+      </Label>
 
       <Textarea
         {...props}

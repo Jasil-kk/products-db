@@ -22,16 +22,28 @@ export function ProductForm({ defaultValues, onSubmit }: Props) {
     formState: { errors },
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
-    defaultValues,
+    defaultValues: {
+      title: "",
+      price: NaN,
+      image: "",
+      category: "",
+      description: "",
+      ...defaultValues,
+    },
   });
 
   return (
     <form
       id="product-form"
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4"
+      className="mt-5 space-y-4"
     >
-      <FormInput label="Title" {...register("title")} error={errors.title} />
+      <FormInput
+        label="Title"
+        {...register("title")}
+        error={errors.title}
+        required
+      />
 
       <FormInput
         label="Price"
@@ -41,12 +53,14 @@ export function ProductForm({ defaultValues, onSubmit }: Props) {
         min="0"
         {...register("price", { valueAsNumber: true })}
         error={errors.price}
+        required
       />
 
       <FormInput
         label="Image URL"
         {...register("image")}
         error={errors.image}
+        required
       />
 
       <FormSelect
@@ -55,6 +69,7 @@ export function ProductForm({ defaultValues, onSubmit }: Props) {
         control={control}
         options={PRODUCT_CATEGORIES.filter((c) => c !== "all")}
         error={errors.category}
+        required
       />
 
       <FormTextarea
@@ -62,6 +77,7 @@ export function ProductForm({ defaultValues, onSubmit }: Props) {
         rows={4}
         {...register("description")}
         error={errors.description}
+        required
       />
     </form>
   );

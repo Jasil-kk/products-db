@@ -14,7 +14,7 @@ type Props = {
 
 export function ProductTableSkeleton({ rows = 5 }: Props) {
   return (
-    <div className="rounded-lg border">
+    <div className="rounded-lg border bg-background">
       <Table>
         <TableHeader>
           <TableRow>

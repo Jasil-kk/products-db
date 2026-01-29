@@ -21,8 +21,11 @@ export function useProducts() {
   const [buttonLoading, setButtonLoading] = useState(false);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [editProduct, setEditProduct] = useState<any>(null);
+  const [editProduct, setEditProduct] = useState<ProductData | null>(null);
+  const [minPrice, setMinPrice] = useState<number | null>(null);
+  const [maxPrice, setMaxPrice] = useState<number | null>(null);
 
+  // filter function
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       const matchSearch = product.title
@@ -31,9 +34,13 @@ export function useProducts() {
 
       const matchCategory = category === "all" || product.category === category;
 
-      return matchSearch && matchCategory;
+      const matchPrice =
+        (minPrice === null || product.price >= minPrice) &&
+        (maxPrice === null || product.price <= maxPrice);
+
+      return matchSearch && matchCategory && matchPrice;
     });
-  }, [products, search, category]);
+  }, [products, search, category, minPrice, maxPrice]);
 
   const paginated = useMemo(
     () => paginate(filteredProducts, page, limit),
@@ -72,18 +79,18 @@ export function useProducts() {
 
   const closeAddModal = () => {
     setShowAddModal(false);
+    setEditProduct(null);
   };
 
   // add/edit function
-  const handleAddEdit = async (data: any) => {
+  const handleAddEdit = async (data: ProductData) => {
     setButtonLoading(true);
     try {
-      if (editProduct) {
+      if (editProduct && editProduct.id) {
         await editProductById(editProduct.id, data);
       } else {
         await addNewProduct(data);
       }
-      setEditProduct(null);
       closeAddModal();
     } finally {
       setButtonLoading(false);
@@ -113,5 +120,9 @@ export function useProducts() {
     handleAddEdit,
     editProduct,
     openEditModal,
+    minPrice,
+    maxPrice,
+    setMinPrice,
+    setMaxPrice,
   };
 }

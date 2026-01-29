@@ -27,7 +27,7 @@ export function ProductTablePagination({
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between bg-background p-2 rounded-lg">
       <p className="text-sm text-muted-foreground font-open-sans">
         Showing <span className="font-medium">{start}</span>
         {" - "}

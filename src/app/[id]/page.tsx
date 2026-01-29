@@ -104,6 +104,12 @@ export default function ProductDetails() {
               </Button>
             </div>
             <h1 className="mt-5 text-2xl font-semibold">{product.title}</h1>
+            <p className="mt-3 text-sm text-muted-foreground font-open-sans">
+              Category:{" "}
+              <span className="font-medium text-foreground capitalize">
+                {product.category}
+              </span>
+            </p>
             <p className="mt-5 font-open-sans text-slate-600 dark:text-gray-400">
               {product.description}
             </p>

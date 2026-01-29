@@ -21,53 +21,6 @@ type FormSelectProps<T extends FieldValues> = {
   required?: boolean;
 };
 
-// export function FormSelect<T extends FieldValues>({
-//   label,
-//   name,
-//   control,
-//   options,
-//   placeholder = "Select an option",
-//   error,
-//   required,
-// }: FormSelectProps<T>) {
-//   return (
-//     <div className="flex flex-col gap-1 w-full">
-//       <Label className="mb-1">
-//         {label}
-//         {required && (
-//           <span className="-ml-1 text-destructive font-open-sans">*</span>
-//         )}
-//       </Label>
-
-//       <Controller
-//         name={name}
-//         control={control}
-//         render={({ field }) => (
-//           <Select value={field.value} onValueChange={field.onChange}>
-//             <SelectTrigger
-//               className={cn(error && "border-destructive", "w-full capitalize")}
-//             >
-//               <SelectValue placeholder={placeholder} />
-//             </SelectTrigger>
-
-//             <SelectContent className="capitalize">
-//               {options.map((option) => (
-//                 <SelectItem key={option} value={option}>
-//                   {option}
-//                 </SelectItem>
-//               ))}
-//             </SelectContent>
-//           </Select>
-//         )}
-//       />
-
-//       {error?.message && (
-//         <span className="text-xs text-destructive">{error.message}</span>
-//       )}
-//     </div>
-//   );
-// }
-
 export function FormSelect<T extends FieldValues>({
   label,
   name,
@@ -90,13 +43,15 @@ export function FormSelect<T extends FieldValues>({
         name={name}
         control={control}
         render={({ field }) => {
-          // Force default to "" if undefined
           const value = field.value ?? "";
 
           return (
             <Select value={value} onValueChange={field.onChange}>
               <SelectTrigger
-                className={cn(error && "border-destructive", "w-full capitalize")}
+                className={cn(
+                  error && "border-destructive",
+                  "w-full capitalize",
+                )}
               >
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
